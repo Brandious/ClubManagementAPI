@@ -31,7 +31,7 @@ exports.getRezervacija = async (req, res) => {
     try
     {     
        
-         //const { userId } = req || req.body;
+         const { userId, eventId } = req || req.body;
          const rezervacija = await Rezervacija.findAll({});
 
          res.status(200).send(rezervacija);

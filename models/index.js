@@ -114,7 +114,6 @@ db.stanjeArtikla.belongsTo(db.events, {as: 'dogadjaj'});
 
 
 
-
   
 
 

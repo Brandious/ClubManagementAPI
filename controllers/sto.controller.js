@@ -30,8 +30,8 @@ exports.getSto = async (req, res) => {
     try
     {     
        
-         //const { userId } = req || req.body;
-         const sto = await Sto.findAll({});
+         const { userId, eventId } = req || req.body;
+         const sto = await Sto.findAll({where: {eventId: eventId}});
 
          res.status(200).send(sto);
     }

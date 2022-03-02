@@ -51,9 +51,9 @@ exports.getRaspored = async (req, res) => {
 
     try
     {     
-        
-         const { userId, eventId } = req.body;
-         const sto = await Sto.findAll({include:[{model: Potrosnja, as: "potrosnja"}]});
+        console.log( req.query );
+         const { userId, eventId } =  req.query || req.body;
+         const sto = await Sto.findAll({where: {eventId: eventId}, include:[{model: Potrosnja, as: "potrosnja"}]});
 
          res.status(200).send({sto}); 
     }

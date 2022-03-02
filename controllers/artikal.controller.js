@@ -34,6 +34,48 @@ exports.createArtikal = async (req, res) => {
    
 }
 
+
+
+exports.batchCreateArtikal = async (req, res) => {
+
+    try
+    {
+         const {userId, artikli, sankId } = req.body;
+         
+
+         const creation = artikli.map(async(el) => {
+                
+            const artikal = await Artikal.create({
+                naziv: el.naziv,
+                mjerna_jedinica: el.mjer_jed,
+                redni_broj: el.redni_broj,
+                userId: userId,
+                skladisteId: sankId
+            });
+
+            const stanjeArtikla = await StanjeArtikla.create({
+                kolicinaUKnjigovodstvu: el.popisanoKnjigovodstvo,
+                artikalId: artikal.id,
+                dogadjajId: el.eventId
+             })
+
+             return({artikal, stanjeArtikla})
+         });
+        
+         res.status(200).send({...creation});
+    }
+    catch(err)
+    {
+        console.log(err);
+        res.status(403).send(err);
+    }
+
+   
+}
+
+
+
+
 exports.getArtikal = async (req, res) => {
 
     try
@@ -91,6 +133,30 @@ exports.updateArtikal = async (req, res) => {
 
    
 }
+
+
+exports.batchUpdateArtikal = async (req, res) => {
+
+    try
+    {
+        const {sankerId, artikli } = req.body;
+        
+
+        const update = artikli.map(async (el) => await StanjeArtikla.update({ popisanaKolicina: el.popisana_kolicina },{where: {artikalId: el.artikalId}}));
+
+        // const artikal = await StanjeArtikla.update({ popisanaKolicina: popisana_kolicina },{where: {artikalId: artikalId}});
+
+         return res.status(200).send({update});
+    }
+    catch(err)
+    {
+        
+        return res.status(403).send(err);
+    }
+
+   
+}
+
 
 exports.getStanjeArtikla = async (req, res) => {
 
